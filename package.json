@@ -1,0 +1,23 @@
+{
+  "name": "qa-tools-portal",
+  "version": "1.0.0",
+  "description": "A public test automation project showcasing Playwright, Postman, GitHub Actions, and GCP Cloud Run. Designed to demonstrate real-world QA skills for job seekers and portfolio building.",
+  "homepage": "https://github.com/wattersnathen/qa-tools-portal#readme",
+  "bugs": {
+    "url": "https://github.com/wattersnathen/qa-tools-portal/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wattersnathen/qa-tools-portal.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test:api": "npx newman run api-tests/qa-tools-portal.collection.json -e api-tests/local.environment.json"
+  },
+  "dependencies": {
+    "newman": "^6.2.1"
+  }
+}

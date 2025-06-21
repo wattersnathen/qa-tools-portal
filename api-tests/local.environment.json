@@ -1,0 +1,21 @@
+{
+	"id": "faea5463-2d17-41b9-848d-ef3fe9b6dccf",
+	"name": "Local",
+	"values": [
+		{
+			"key": "baseURL",
+			"value": "localhost:3000",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "productId",
+			"value": "2",
+			"type": "default",
+			"enabled": false
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-06-21T18:03:59.557Z",
+	"_postman_exported_using": "Postman/11.50.5"
+}
