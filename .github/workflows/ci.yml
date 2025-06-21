@@ -30,14 +30,14 @@ jobs:
       - name: Start mock server
         working-directory: server
         run: |
-          npm run dev &
+          npm run ci &
           sleep 3
 
       - name: Install Newman
         run: npm install -g newman
 
       - name: Run Postman API Tests
-        run: newman run ./api-tests/collection.json
+        run: npx newman run api-tests/qa-tools-portal.collection.json -e api-tests/local.environment.json
 
       - name: Install Playwright dependencies
         working-directory: e2e-tests

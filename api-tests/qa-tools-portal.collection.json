@@ -206,7 +206,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"pm.variables.set('productId', pm.environment.get('productId') || 1);",
+							"pm.variables.set('productId', pm.environment.get('productId') || 10);",
 							""
 						],
 						"type": "text/javascript",
