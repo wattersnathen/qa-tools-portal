@@ -6,8 +6,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 const products = [
-    { id: 1, name: 'candy', price: 4.99 },
-    { id: 2, name: 'book', price: 9.97 },
+    { id: 11, name: 'candy', price: 4.99 },
+    { id: 10, name: 'book', price: 9.97 },
     { id: 3, name: 'webcam', price: 99.95 },
 ];
 

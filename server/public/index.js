@@ -7,10 +7,11 @@ async function fetchProducts() {
 function renderProduct(product) {
     const wrapper = document.getElementById('product-catalog');
     const div = document.createElement('div');
-    div.className = 'product-item'
+    div.className = 'product-item';
+    div.setAttribute('data-testid', product.id);
     div.innerHTML = `
-        <div data-testId="product-name">${product.name}</div>
-        <div data-testId="product-price">${product.price}</div>
+        <div class="name">${product.name}</div>
+        <div class="price">${product.price}</div>
     `;
     wrapper.appendChild(div);
 }
