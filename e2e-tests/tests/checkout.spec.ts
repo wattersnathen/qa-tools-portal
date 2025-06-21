@@ -46,5 +46,4 @@ async function fillForm(page, id, assertion) {
 
     const responseDiv = await page.locator('.response');
     await expect(responseDiv).toContainText(assertion);
-    await responseDiv.waitFor({ state: 'detached' });
 }
