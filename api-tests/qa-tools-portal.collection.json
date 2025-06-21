@@ -153,7 +153,7 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Response status code is 200\", function () {",
-							"    pm.expect(pm.response.code).to.equal(200);",
+							"    pm.expect(pm.response.code).to.equal(201);",
 							"});",
 							"",
 							"",

@@ -25,7 +25,7 @@ app.post('/api/checkout', (req, res) => {
     if (!product) {
         return res.status(404).json({ error: 'Product not found' });
     }
-    return res.status(200).json({ message: 'Checkout successful', product })
+    return res.status(201).json({ message: 'Checkout successful', product })
 });
 
 
