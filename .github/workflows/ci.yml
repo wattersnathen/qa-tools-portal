@@ -1,0 +1,50 @@
+name: CI - API & E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run API and E2E Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install server dependencies
+        working-directory: server
+        run: npm ci
+
+      - name: Start mock server
+        working-directory: server
+        run: |
+          npm run dev &
+          sleep 3
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run Postman API Tests
+        run: newman run ./api-tests/collection.json
+
+      - name: Install Playwright dependencies
+        working-directory: e2e-tests
+        run: |
+          npm ci
+          npx playwright install --with-deps
+
+      - name: Run Playwright E2E Tests
+        working-directory: e2e-tests
+        run: npx playwright test
