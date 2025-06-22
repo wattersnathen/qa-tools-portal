@@ -34,8 +34,13 @@ test.describe('Using API mocks in Checkout', () => {
 });
 
 async function fillForm(page, id, expectedMessage) {
+    // clock install must start before the form submit action
+    await page.clock.install();
     await page.getByRole('spinbutton').fill('' + id);
     await page.locator('input[type="submit"]').click();
     const responseElement = await page.locator('.response');
     await expect(responseElement).toContainText(expectedMessage);
+    // advance the clock by 9 seconds (the client-side setTimeout value)
+    await page.clock.fastForward('09');
+    await expect(responseElement).not.toBeAttached();
 }
