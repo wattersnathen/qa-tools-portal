@@ -1,49 +1,44 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, Page } from '@playwright/test';
 
 test.describe('Checkout Regressions', () => {
-    let apiProducts: any[] = [];
-    test.beforeAll(async ({ request }) => {
-        const response = await request.get('/api/products');
-        const body = await response.json();
-        apiProducts = body;
-    });
+  let apiProducts: Array<{ id: number; name: string; price: number }> = [];
 
-    test('products rendered should match available products', async ({ page }) => {
-        await page.goto('/');
-        const uiProducts = await page.locator('.product-item').all();
-        const uiItems: any[] = [];
-        for (const product of uiProducts) {
-            const id = Number(await product.getAttribute('data-testid'));
-            const name = await product.locator('.name').textContent();
-            const price = Number(await product.locator('.price').textContent());
+  test.beforeAll(async ({ request }) => {
+    const response = await request.get('/api/products');
+    apiProducts = await response.json();
+  });
 
-            uiItems.push({
-                id,
-                name,
-                price
-            });
-        }
+  test('should render products that match the API', async ({ page }) => {
+    await page.goto('/');
+    const uiProducts = await page.locator('.product-item').all();
 
-        expect(apiProducts).toEqual(uiItems);
-    });
+    const displayed = await Promise.all(
+      uiProducts.map(async (product) => ({
+        id: Number(await product.getAttribute('data-testid')),
+        name: await product.locator('.name').textContent(),
+        price: Number(await product.locator('.price').textContent()),
+      }))
+    );
 
-    test('can checkout with a known product', async ({ page }) => {
-        const ids = apiProducts.map(p => p.id);
-        
-        await page.goto('/');
-        await fillForm(page, ids[0], 'Checkout successful');
-    });
+    expect(displayed).toEqual(apiProducts);
+  });
 
-    test('error presented to user when checking out with invalid product', async ({ page }) => {
-        await page.goto('/');
-        await fillForm(page, -1, 'Product not found');
-    });
+  test('should checkout successfully with a valid product', async ({ page }) => {
+    await page.goto('/');
+    const validId = apiProducts[0]?.id;
+    await submitCheckoutForm(page, validId, 'Checkout successful');
+  });
+
+  test('should show error for an invalid product', async ({ page }) => {
+    await page.goto('/');
+    await submitCheckoutForm(page, -1, 'Product not found');
+  });
 });
 
-async function fillForm(page, id, assertion) {
-    await page.getByRole('spinbutton').fill('' + id);
-    await page.locator('input[type="submit"]').click();
+async function submitCheckoutForm(page: Page, id: number, expectedMessage: string) {
+  await page.getByRole('spinbutton').fill(String(id));
+  await page.locator('input[type="submit"]').click();
 
-    const responseDiv = await page.locator('.response');
-    await expect(responseDiv).toContainText(assertion);
+  const response = page.locator('.response');
+  await expect(response).toContainText(expectedMessage);
 }
